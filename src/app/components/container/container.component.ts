@@ -17,10 +17,11 @@ export class ContainerComponent implements OnInit {
 
     const characterList = this.lowerCharacters;
 
-    // generate 10 random passwords using characters from the character list
-    for (let i = 0; i < 10; i++) {
+    // generate 50 random passwords using characters from the character list
+    for (let i = 0; i < 50; i++) {
       const randomPassowrd = this.generateRandomPassword(characterList);
-      console.log('randomPassword: ', randomPassowrd);
+
+      this.checkPasswordMatch(userPassword, randomPassowrd);
     }
   }
 
@@ -39,5 +40,28 @@ export class ContainerComponent implements OnInit {
     const randomCharacter3 = this.selectRandomCharacter(characterList);
     const randomPassword = `${randomCharacter1}${randomCharacter2}${randomCharacter3}`;
     return randomPassword;
+  }
+
+  checkPasswordMatch(userPassword: string, randomPassword: string) {
+    let currentIndex = 0;
+
+    // temp console log to show randomPassword if first character matches
+    if (userPassword[0] === randomPassword[0]) {
+      console.log('randomPassword: ', randomPassword);
+    }
+
+    while (userPassword[currentIndex] === randomPassword[currentIndex]) {
+      console.log(
+        `randomPassword current index: ${randomPassword[currentIndex]}`
+      );
+      currentIndex += 1;
+      console.log('currentIndex: ', currentIndex);
+    }
+
+    // need to check for no match, partial match, or complete match
+
+    if (userPassword === randomPassword) {
+      console.log(`Match!!! randomPassword: ${randomPassword}`);
+    }
   }
 }
