@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./container.component.scss'],
 })
 export class ContainerComponent implements OnInit {
-  lowerCharacters = 'abcdefghijklmnopqrstuvwxyz';
+  // lowerCharacters = 'abcdefghijklmnopqrstuvwxyz';
+  private lowerCharacters = 'abc';
   constructor() {}
 
   ngOnInit(): void {}
@@ -21,7 +22,10 @@ export class ContainerComponent implements OnInit {
     for (let i = 0; i < 50; i++) {
       const randomPassowrd = this.generateRandomPassword(characterList);
 
-      this.checkPasswordMatch(userPassword, randomPassowrd);
+      const result = this.checkPasswordMatch(userPassword, randomPassowrd);
+      if (result !== 'No match') {
+        console.log(`Attempt ${i + 1}, ${randomPassowrd}: ${result}`);
+      }
     }
   }
 
@@ -42,26 +46,27 @@ export class ContainerComponent implements OnInit {
     return randomPassword;
   }
 
+  // The random password can have three possibilities- it can be a complete match, a partial match, or no match at all. Input the user password and the
+  // random password, see which of the three matching possibilities it is, and return the result as a string.
   checkPasswordMatch(userPassword: string, randomPassword: string) {
     let currentIndex = 0;
 
-    // temp console log to show randomPassword if first character matches
-    if (userPassword[0] === randomPassword[0]) {
-      console.log('randomPassword: ', randomPassword);
-    }
-
-    while (userPassword[currentIndex] === randomPassword[currentIndex]) {
-      console.log(
-        `randomPassword current index: ${randomPassword[currentIndex]}`
-      );
-      currentIndex += 1;
-      console.log('currentIndex: ', currentIndex);
-    }
-
-    // need to check for no match, partial match, or complete match
-
+    // check for complete match
     if (userPassword === randomPassword) {
-      console.log(`Match!!! randomPassword: ${randomPassword}`);
+      return `Complete match! randomPassword: ${randomPassword}`;
+    }
+    // check for no match
+    else if (userPassword[0] !== randomPassword[0]) {
+      return 'No match';
+    }
+    // check for partial match
+    else {
+      let partialMatch = '';
+      while (userPassword[currentIndex] === randomPassword[currentIndex]) {
+        partialMatch += randomPassword[currentIndex];
+        currentIndex += 1;
+      }
+      return `partial match: ${partialMatch}`;
     }
   }
 }
