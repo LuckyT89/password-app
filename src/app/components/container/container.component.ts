@@ -8,14 +8,13 @@ import { Component, OnInit } from '@angular/core';
 export class ContainerComponent implements OnInit {
   // lowerCharacters = 'abcdefghijklmnopqrstuvwxyz';
   private lowerCharacters = 'abc';
+  matchList: string[] = [];
   constructor() {}
 
   ngOnInit(): void {}
 
   buttonClick(input1: string, input2: string, input3: string) {
     const userPassword = `${input1}${input2}${input3}`;
-    console.log('userPassword: ', userPassword);
-
     const characterList = this.lowerCharacters;
 
     // generate 50 random passwords using characters from the character list
@@ -24,7 +23,8 @@ export class ContainerComponent implements OnInit {
 
       const result = this.checkPasswordMatch(userPassword, randomPassowrd);
       if (result !== 'No match') {
-        console.log(`Attempt ${i + 1}, ${randomPassowrd}: ${result}`);
+        this.matchList.push(`Attempt #${i + 1}: ${result}`);
+        console.log(`Attempt ${i + 1}: ${result}`);
       }
     }
   }
@@ -53,7 +53,7 @@ export class ContainerComponent implements OnInit {
 
     // check for complete match
     if (userPassword === randomPassword) {
-      return `Complete match! randomPassword: ${randomPassword}`;
+      return `${randomPassword} Complete match!`;
     }
     // check for no match
     else if (userPassword[0] !== randomPassword[0]) {
@@ -66,7 +66,8 @@ export class ContainerComponent implements OnInit {
         partialMatch += randomPassword[currentIndex];
         currentIndex += 1;
       }
-      return `partial match: ${partialMatch}`;
+      const remainder = randomPassword.slice(partialMatch.length);
+      return `${partialMatch} | ${remainder}`;
     }
   }
 }

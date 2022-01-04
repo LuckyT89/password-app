@@ -5,4 +5,7 @@
   <button (click)="buttonClick(input1.value, input2.value, input3.value)">
     Go
   </button>
+  <ul>
+    <li *ngFor="let match of matchList">{{ match }}</li>
+  </ul>
 </div>
