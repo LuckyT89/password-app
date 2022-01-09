@@ -25,6 +25,10 @@ export class ContainerComponent implements OnInit {
       if (result !== 'No match') {
         this.matchList.push(`Attempt #${i + 1}: ${result}`);
         console.log(`Attempt ${i + 1}: ${result}`);
+        // stop looping and end the method if there is a complete match
+        if (result.includes('Complete match!')) {
+          return;
+        }
       }
     }
   }
