@@ -8,10 +8,38 @@ import { Component, OnInit } from '@angular/core';
 export class ContainerComponent implements OnInit {
   // lowerCharacters = 'abcdefghijklmnopqrstuvwxyz';
   private lowerCharacters = 'abc';
+  private upperCharacters = 'ABC';
+
+  private allowedCharacters = this.lowerCharacters;
+
+  private upperCharactersAllowed = false;
+
   matchList: string[] = [];
   constructor() {}
 
   ngOnInit(): void {}
+
+  toggleCapitalLetters() {
+    this.upperCharactersAllowed = !this.upperCharactersAllowed;
+    console.log('upperCharactersAllowed: ', this.upperCharactersAllowed);
+    this.setAllowedCharacters();
+  }
+
+  setAllowedCharacters() {
+    console.log('set the list');
+    this.allowedCharacters = this.lowerCharacters;
+    if (this.upperCharactersAllowed) {
+      this.allowedCharacters = this.lowerCharacters + this.upperCharacters;
+    }
+    console.log('allowedCharacters: ', this.allowedCharacters);
+  }
+
+  validateInput(event: any) {
+    console.log('event: ', event);
+    if (!this.allowedCharacters.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
 
   buttonClick(input1: string, input2: string, input3: string) {
     const userPassword = `${input1}${input2}${input3}`;
