@@ -9,10 +9,14 @@ export class ContainerComponent implements OnInit {
   // lowerCharacters = 'abcdefghijklmnopqrstuvwxyz';
   private lowerCharacters = 'abc';
   private upperCharacters = 'ABC';
-
-  private allowedCharacters = this.lowerCharacters;
+  private numbers = '12';
+  private specialCharacters = '!@';
 
   private upperCharactersAllowed = false;
+  private numbersAllowed = false;
+  private speacialCharactersAllowed = false;
+
+  private allowedCharacters = this.lowerCharacters;
 
   matchList: string[] = [];
   constructor() {}
@@ -21,17 +25,32 @@ export class ContainerComponent implements OnInit {
 
   toggleCapitalLetters() {
     this.upperCharactersAllowed = !this.upperCharactersAllowed;
-    console.log('upperCharactersAllowed: ', this.upperCharactersAllowed);
     this.setAllowedCharacters();
   }
 
+  toggleNumbers() {
+    this.numbersAllowed = !this.numbersAllowed;
+    this.setAllowedCharacters();
+  }
+
+  toggleSpecialCharacters() {
+    this.speacialCharactersAllowed = !this.speacialCharactersAllowed;
+    this.setAllowedCharacters();
+  }
+
+  // set the list of allowed characters based on which checkboxes are
   setAllowedCharacters() {
     console.log('set the list');
     this.allowedCharacters = this.lowerCharacters;
     if (this.upperCharactersAllowed) {
-      this.allowedCharacters = this.lowerCharacters + this.upperCharacters;
+      this.allowedCharacters = this.allowedCharacters + this.upperCharacters;
     }
-    console.log('allowedCharacters: ', this.allowedCharacters);
+    if (this.numbersAllowed) {
+      this.allowedCharacters = this.allowedCharacters + this.numbers;
+    }
+    if (this.speacialCharactersAllowed) {
+      this.allowedCharacters = this.allowedCharacters + this.specialCharacters;
+    }
   }
 
   validateInput(event: any) {
@@ -41,15 +60,22 @@ export class ContainerComponent implements OnInit {
     }
   }
 
+  resetBtnClick() {
+    console.log('reset button clicked');
+  }
+
   buttonClick(input1: string, input2: string, input3: string) {
     const userPassword = `${input1}${input2}${input3}`;
-    const characterList = this.lowerCharacters;
+
+    console.log('allowedCharacters: ', this.allowedCharacters);
 
     // generate 50 random passwords using characters from the character list
     for (let i = 0; i < 50; i++) {
-      const randomPassowrd = this.generateRandomPassword(characterList);
+      const randomPassword = this.generateRandomPassword(
+        this.allowedCharacters
+      );
 
-      const result = this.checkPasswordMatch(userPassword, randomPassowrd);
+      const result = this.checkPasswordMatch(userPassword, randomPassword);
       if (result !== 'No match') {
         this.matchList.push(`Attempt #${i + 1}: ${result}`);
         console.log(`Attempt ${i + 1}: ${result}`);
@@ -99,7 +125,7 @@ export class ContainerComponent implements OnInit {
         currentIndex += 1;
       }
       const remainder = randomPassword.slice(partialMatch.length);
-      return `${partialMatch} | ${remainder}`;
+      return `${partialMatch}|${remainder}`;
     }
   }
 }

@@ -3,12 +3,26 @@
     ><input type="checkbox" (change)="toggleCapitalLetters()" />Allow capital
     letters</label
   ><br />
-  <label><input type="checkbox" />Allow numbers</label><br />
-  <label><input type="checkbox" />Allow special characters</label><br />
+  <label
+    ><input type="checkbox" (change)="toggleNumbers()" />Allow numbers</label
+  ><br />
+  <label
+    ><input type="checkbox" (change)="toggleSpecialCharacters()" />Allow special
+    characters</label
+  >
+
+  <br />
+  <br />
 
   <input type="text" maxlength="1" #input1 (keypress)="validateInput($event)" />
-  <input type="text" maxlength="1" #input2 />
-  <input type="text" maxlength="1" #input3 />
+  <input type="text" maxlength="1" #input2 (keypress)="validateInput($event)" />
+  <input type="text" maxlength="1" #input3 (keypress)="validateInput($event)" />
+
+  <br />
+  <br />
+
+  <button (click)="resetBtnClick()">Reset</button>
+
   <button (click)="buttonClick(input1.value, input2.value, input3.value)">
     Go
   </button>
