@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss'],
 })
-export class ContainerComponent implements OnInit {
+export class ContainerComponent implements AfterViewInit {
   // lowerCharacters = 'abcdefghijklmnopqrstuvwxyz';
   private lowerCharacters = 'abc';
   private upperCharacters = 'ABC';
@@ -18,10 +24,14 @@ export class ContainerComponent implements OnInit {
 
   private allowedCharacters = this.lowerCharacters;
 
+  @ViewChild('passwordInput') passwordInput!: ElementRef;
+
   matchList: string[] = [];
   constructor() {}
 
-  ngOnInit(): void {}
+  ngAfterViewInit(): void {
+    this.passwordInput.nativeElement.focus(); // set the input box to have focus when the app loads
+  }
 
   toggleCapitalLetters() {
     this.upperCharactersAllowed = !this.upperCharactersAllowed;
@@ -64,9 +74,7 @@ export class ContainerComponent implements OnInit {
     console.log('reset button clicked');
   }
 
-  buttonClick(input1: string, input2: string, input3: string) {
-    const userPassword = `${input1}${input2}${input3}`;
-
+  buttonClick(passwordInput: string) {
     console.log('allowedCharacters: ', this.allowedCharacters);
 
     // generate 50 random passwords using characters from the character list
@@ -75,7 +83,7 @@ export class ContainerComponent implements OnInit {
         this.allowedCharacters
       );
 
-      const result = this.checkPasswordMatch(userPassword, randomPassword);
+      const result = this.checkPasswordMatch(passwordInput, randomPassword);
       if (result !== 'No match') {
         this.matchList.push(`Attempt #${i + 1}: ${result}`);
         console.log(`Attempt ${i + 1}: ${result}`);

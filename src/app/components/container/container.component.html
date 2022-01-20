@@ -13,19 +13,23 @@
 
   <br />
   <br />
+  <br />
 
-  <input type="text" maxlength="1" #input1 (keypress)="validateInput($event)" />
-  <input type="text" maxlength="1" #input2 (keypress)="validateInput($event)" />
-  <input type="text" maxlength="1" #input3 (keypress)="validateInput($event)" />
+  <input
+    type="text"
+    maxlength="3"
+    #passwordInput
+    (keypress)="validateInput($event)"
+  />
 
+  <br />
+  <br />
   <br />
   <br />
 
   <button (click)="resetBtnClick()">Reset</button>
 
-  <button (click)="buttonClick(input1.value, input2.value, input3.value)">
-    Go
-  </button>
+  <button (click)="buttonClick(passwordInput.value)">Go</button>
   <ul>
     <li *ngFor="let match of matchList">{{ match }}</li>
   </ul>
