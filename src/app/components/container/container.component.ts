@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-container',
@@ -12,7 +13,6 @@ import {
   styleUrls: ['./container.component.scss'],
 })
 export class ContainerComponent implements AfterViewInit {
-  // lowerCharacters = 'abcdefghijklmnopqrstuvwxyz';
   private lowerCharacters = 'abc';
   private upperCharacters = 'ABC';
   private numbers = '12';
@@ -26,11 +26,23 @@ export class ContainerComponent implements AfterViewInit {
 
   @ViewChild('passwordInput') passwordInput!: ElementRef;
 
+  private passwordLength: number = 5;
+
+  form = new FormGroup({ length: new FormControl('5') });
+
+  testNumber = 6;
+
   matchList: string[] = [];
+
   constructor() {}
 
   ngAfterViewInit(): void {
     this.passwordInput.nativeElement.focus(); // set the input box to have focus when the app loads
+  }
+
+  // the length value from the radio button is a string, set a global variable to store this as a number
+  setPasswordLength() {
+    this.passwordLength = parseInt(this.form.value.length);
   }
 
   toggleCapitalLetters() {
@@ -48,7 +60,7 @@ export class ContainerComponent implements AfterViewInit {
     this.setAllowedCharacters();
   }
 
-  // set the list of allowed characters based on which checkboxes are
+  // set the list of allowed characters based on which checkboxes are checked
   setAllowedCharacters() {
     console.log('set the list');
     this.allowedCharacters = this.lowerCharacters;
@@ -64,7 +76,6 @@ export class ContainerComponent implements AfterViewInit {
   }
 
   validateInput(event: any) {
-    console.log('event: ', event);
     if (!this.allowedCharacters.includes(event.key)) {
       event.preventDefault();
     }
@@ -77,8 +88,8 @@ export class ContainerComponent implements AfterViewInit {
   buttonClick(passwordInput: string) {
     console.log('allowedCharacters: ', this.allowedCharacters);
 
-    // generate 50 random passwords using characters from the character list
-    for (let i = 0; i < 50; i++) {
+    // generate 100 random passwords using characters from the character list
+    for (let i = 0; i < 100; i++) {
       const randomPassword = this.generateRandomPassword(
         this.allowedCharacters
       );
@@ -102,13 +113,14 @@ export class ContainerComponent implements AfterViewInit {
     );
   }
 
-  // input a list of characters (just a string), select a random character from the list three times, combine them to make a random password,
-  // then return the random password
+  // input a list of allowed characters and return a random password that matches the allowed length
   generateRandomPassword(characterList: string): string {
-    const randomCharacter1 = this.selectRandomCharacter(characterList);
-    const randomCharacter2 = this.selectRandomCharacter(characterList);
-    const randomCharacter3 = this.selectRandomCharacter(characterList);
-    const randomPassword = `${randomCharacter1}${randomCharacter2}${randomCharacter3}`;
+    let randomCharacter = '';
+    let randomPassword = '';
+    for (let i = 0; i < this.passwordLength; i++) {
+      randomCharacter = this.selectRandomCharacter(characterList);
+      randomPassword += randomCharacter;
+    }
     return randomPassword;
   }
 

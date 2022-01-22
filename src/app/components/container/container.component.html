@@ -1,33 +1,83 @@
 <div class="container">
   <label
-    ><input type="checkbox" (change)="toggleCapitalLetters()" />Allow capital
+    ><input type="checkbox" (change)="toggleCapitalLetters()" />Capital
     letters</label
   ><br />
-  <label
-    ><input type="checkbox" (change)="toggleNumbers()" />Allow numbers</label
+  <label><input type="checkbox" (change)="toggleNumbers()" />Numbers</label
   ><br />
   <label>
-    <input type="checkbox" (change)="toggleSpecialCharacters()" />Allow special
+    <input type="checkbox" (change)="toggleSpecialCharacters()" />Special
     characters
   </label>
   <br />
   <br />
 
-  <label>Number of characters</label><br />
-  <label> <input type="radio" name="length" /> 3 </label>
-  <label> <input type="radio" name="length" /> 4 </label>
-  <label> <input type="radio" name="length" checked /> 5 </label>
-  <label> <input type="radio" name="length" /> 6 </label>
-  <label> <input type="radio" name="length" /> 7 </label>
-  <label> <input type="radio" name="length" /> 8 </label>
+  <label>Length</label><br />
+  <form [formGroup]="form">
+    <label>
+      <input
+        type="radio"
+        formControlName="length"
+        value="3"
+        (change)="setPasswordLength()"
+      />
+      3
+    </label>
+    <label>
+      <input
+        type="radio"
+        formControlName="length"
+        value="4"
+        (change)="setPasswordLength()"
+      />
+      4
+    </label>
+    <label>
+      <input
+        type="radio"
+        formControlName="length"
+        value="5"
+        (change)="setPasswordLength()"
+      />
+      5
+    </label>
+    <label>
+      <input
+        type="radio"
+        formControlName="length"
+        value="6"
+        (change)="setPasswordLength()"
+      />
+      6
+    </label>
+    <label>
+      <input
+        type="radio"
+        formControlName="length"
+        value="7"
+        (change)="setPasswordLength()"
+      />
+      7
+    </label>
+    <label>
+      <input
+        type="radio"
+        formControlName="length"
+        value="8"
+        (change)="setPasswordLength()"
+      />
+      8
+    </label>
+  </form>
 
   <br />
   <br />
   <br />
 
+  <!-- maxlength of the input is set to what the user selects for length -->
   <input
     type="text"
-    maxlength="3"
+    [attr.maxlength]="form.value.length"
     #passwordInput
     (keypress)="validateInput($event)"
   />
